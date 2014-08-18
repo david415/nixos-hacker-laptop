@@ -8,7 +8,15 @@
     [ <nixpkgs/nixos/modules/installer/scan/not-detected.nix>
     ];
 
+  powerManagement.cpuFreqGovernor = "ondemand";
+  powerManagement.enable = true;
+
+  boot.kernelPackages = pkgs.linuxPackages_3_14;
+  boot.loader.grub.enable = true;
+  boot.loader.grub.version = 2;
+  boot.loader.grub.device = "/dev/sda";
   boot.initrd.availableKernelModules = [ "xhci_hcd" "ehci_pci" "ahci" "usb_storage" ];
+  boot.initrd.kernelModules = [ "aesni-intel" "dm-crypt" "ext4" "xts" ];
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
 
@@ -22,6 +30,7 @@
       fsType = "ext4";
     };
 
+  # swap is for suckers
   swapDevices =[ ];
 
   nix.maxJobs = 4;
